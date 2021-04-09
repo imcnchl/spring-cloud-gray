@@ -1,0 +1,6 @@
+environment:
+  name: A
+  version:
+
+server:
+  port: 8001

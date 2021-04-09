@@ -1,0 +1,5 @@
+# 自动配置的bean
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  cn.caohongliang.gray.core.flowcontrol.FlowControlAutoConfiguration,\
+  cn.caohongliang.gray.core.loadbalancer.CustomLoadBalancerAutoConfiguration,\
+  cn.caohongliang.gray.core.autoconfig.CoreAutoConfiguration

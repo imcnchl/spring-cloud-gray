@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.4.4</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>cn.caohongliang.gray</groupId>
+    <artifactId>spring-cloud-gray</artifactId>
+    <version>${revision}</version>
+    <name>spring-cloud-gray</name>
+    <description>Spring Cloud 灰度发布</description>
+    <packaging>pom</packaging>
+
+    <properties>
+        <java.version>11</java.version>
+        <!-- 版本号 -->
+        <revision>1.0.0</revision>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <!--        <spring-cloud.version>2020.0.2</spring-cloud.version>-->
+        <!--        <spring-cloud-alibaba.version>2.2.5.RELEASE</spring-cloud-alibaba.version>-->
+        <spring-cloud.version>2020.0.2</spring-cloud.version>
+        <spring-cloud-alibaba.version>2020.0.RC1</spring-cloud-alibaba.version>
+    </properties>
+
+    <build>
+    </build>
+
+    <modules>
+        <module>core</module>
+        <module>common</module>
+        <module>common-webmvc</module>
+        <module>gateway</module>
+        <module>user-api</module>
+        <module>user</module>
+        <module>order-api</module>
+        <module>order</module>
+        <module>payment-api</module>
+        <module>payment</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>4.0.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>30.1-jre</version>
+            </dependency>
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>2.8.6</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>servlet-api</artifactId>
+                <version>2.5</version>
+            </dependency>
+            <!--            <dependency>-->
+            <!--                <groupId>org.springframework.cloud</groupId>-->
+            <!--                <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>-->
+            <!--                <version>2.2.7.RELEASE</version>-->
+            <!--            </dependency>-->
+            <!--            <dependency>-->
+            <!--                <groupId>com.netflix.ribbon</groupId>-->
+            <!--                <artifactId>ribbon-loadbalancer</artifactId>-->
+            <!--                <version>2.3.0</version>-->
+            <!--            </dependency>-->
+        </dependencies>
+    </dependencyManagement>
+</project>

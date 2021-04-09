@@ -1,0 +1,12 @@
+environment:
+  name: A
+  version:
+
+server:
+  port: 8003
+
+spring:
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false

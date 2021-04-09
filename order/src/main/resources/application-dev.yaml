@@ -1,0 +1,25 @@
+environment:
+  name: A
+  version:
+
+server:
+  port: 8002
+
+spring:
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: true
+logging:
+  level:
+    root: info
+    com:
+      alibaba:
+        nacos:
+          client:
+            naming: warn
+    cn:
+      caohongliang:
+        gray:
+          core:
+            enviroment: info
