@@ -1,7 +1,7 @@
 package cn.caohongliang.gray.core.flowcontrol.enviroment;
 
-import cn.caohongliang.gray.core.flowcontrol.FlowControlProperties;
-import cn.caohongliang.gray.core.flowcontrol.FlowControlStrategy;
+import cn.caohongliang.gray.core.flowcontrol.config.FlowControlProperties;
+import cn.caohongliang.gray.core.flowcontrol.config.FlowControlStrategy;
 import cn.caohongliang.gray.core.util.gson.GsonUtils;
 import org.slf4j.Logger;
 
@@ -10,38 +10,38 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 环境和版本适配器
+ * 环境匹配器
+ *
+ * @author caohongliang
  */
 public interface EnvironmentMatcher {
 
 	Logger getLogger();
 
 	/**
-	 * 获取在请求头中指定的环境版本信息
+	 * 包装请求
 	 *
 	 * @param request 请求
-	 * @return base64 编码后的json
+	 * @return wrapper
 	 */
-	String getHeaderText(Object request);
+	RequestWrapper wrapper(Object request);
 
 	/**
 	 * 根据流控策略对当前请求进行匹配，判断应该转发到哪个版本
 	 *
 	 * @return 环境和版本
 	 */
-	default void match(FlowControlProperties config, Object request) {
+	default Environment match(FlowControlProperties config, RequestWrapper request) {
 		if (!config.isEnable()) {
 			//没有启用流控策略
-			return;
+			return null;
 		}
-		String base64Text = getHeaderText(request);
+		String base64Text = request.getFirstHeader(Environment.HEADER_NAME);
 		//TODO gateway即使设置该请求头也不能生效，避免直接指定版本
 		Environment environment = Environment.decode(base64Text);
 		if (environment != null) {
-			//已经指定了环境和版本，直接设置到ThreadLocal
-			//TODO caohongliang 没有进行释放
-			Environment.cache(environment);
-			return;
+			//已经指定了环境和版本
+			return environment;
 		}
 
 		//没有直接指定版本，需要根据流控策略进行匹配
@@ -50,8 +50,7 @@ public interface EnvironmentMatcher {
 		List<FlowControlStrategy> strategies = config.getStrategies();
 		if (strategies == null || strategies.isEmpty()) {
 			//流控策略不存在，使用当前策略
-			Environment.cache(config.getCurrent());
-			return;
+			return config.getCurrent();
 		}
 		FlowControlStrategy matchedStrategy = strategies.stream()
 				.filter(Objects::nonNull)
@@ -66,8 +65,7 @@ public interface EnvironmentMatcher {
 			if (getLogger().isDebugEnabled()) {
 				getLogger().debug("没有匹配的流控策略，使用当前策略：{}", GsonUtils.toJson(strategies));
 			}
-			Environment.cache(config.getCurrent());
-			return;
+			return config.getCurrent();
 		}
 		if (getLogger().isDebugEnabled()) {
 			getLogger().debug("匹配到的策略：{}", GsonUtils.toJson(matchedStrategy));
@@ -76,8 +74,8 @@ public interface EnvironmentMatcher {
 		if (getLogger().isDebugEnabled()) {
 			getLogger().debug("指定的环境：name={}, version={}", environment.getName(), environment.getVersion());
 		}
-		//已经指定了环境和版本，直接设置到ThreadLocal
-		Environment.cache(environment);
+		//已经指定了环境和版本
+		return environment;
 	}
 
 }

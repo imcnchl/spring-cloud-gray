@@ -9,8 +9,13 @@ import lombok.extern.slf4j.Slf4j;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+/**
+ * Feign请求前指定好预期的环境和版本
+ *
+ * @author caohongliang
+ */
 @Slf4j
-public class FlowControlFeignHeaderAdder implements RequestInterceptor {
+public class AddFeignRequestHeader implements RequestInterceptor {
 
 	@Override
 	public void apply(RequestTemplate template) {
@@ -19,6 +24,6 @@ public class FlowControlFeignHeaderAdder implements RequestInterceptor {
 			log.info("准备添加环境请求头：url={}, json={}", template.request().url(), json);
 		}
 		String value = Base64.getEncoder().encodeToString(json.getBytes(StandardCharsets.UTF_8));
-		template.header(Constants.ENVIRONMENT_VERSION_HEADER_NAME, value);
+		template.header(Environment.HEADER_NAME, value);
 	}
 }

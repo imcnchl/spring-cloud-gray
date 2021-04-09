@@ -14,6 +14,10 @@ spring:
         namespace: spring-cloud-gray
         # 注意：配置配置文件时需要指定分组，方便查询
         group: ${spring.profiles.active:default}
+        shared-configs:
+          - data-id: flow-control.json
+            group: ${spring.profiles.active}
+            refresh: true
       discovery:
         # 指定nacos注册中心的地址
         server-addr: 192.168.56.11:8848

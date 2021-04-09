@@ -1,6 +1,6 @@
 package cn.caohongliang.gray.core.flowcontrol.enviroment;
 
-import cn.caohongliang.gray.core.flowcontrol.FlowControlProperties;
+import cn.caohongliang.gray.core.flowcontrol.config.FlowControlProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -11,8 +11,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
-import static cn.caohongliang.gray.core.flowcontrol.Constants.ENVIRONMENT_VERSION_HEADER_NAME;
 
 /**
  * 流控策略匹配，web mvc
@@ -30,14 +28,16 @@ public class ServletEnvironmentMatcher extends OncePerRequestFilter implements E
 	}
 
 	@Override
-	public String getHeaderText(Object request) {
-		return ((HttpServletRequest) request).getHeader(ENVIRONMENT_VERSION_HEADER_NAME);
+	public RequestWrapper wrapper(Object request) {
+		return new ServletRequestWrapper((HttpServletRequest) request);
 	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 		try {
-			match(config, request);
+			Environment environment = match(config, wrapper(request));
+			//缓存环境信息
+			Environment.cache(environment);
 			filterChain.doFilter(request, response);
 		} finally {
 			//清除

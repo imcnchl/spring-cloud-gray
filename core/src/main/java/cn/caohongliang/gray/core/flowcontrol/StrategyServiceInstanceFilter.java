@@ -1,9 +1,10 @@
 package cn.caohongliang.gray.core.flowcontrol;
 
+import cn.caohongliang.gray.core.flowcontrol.config.FlowControlProperties;
+import cn.caohongliang.gray.core.flowcontrol.config.Isolation;
 import cn.caohongliang.gray.core.flowcontrol.enviroment.Environment;
 import cn.caohongliang.gray.core.loadbalancer.ServiceInstanceFilter;
 import cn.caohongliang.gray.core.loadbalancer.ServiceInstanceFilterChain;
-import com.alibaba.cloud.nacos.NacosDiscoveryProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
@@ -31,13 +32,9 @@ public class StrategyServiceInstanceFilter implements ServiceInstanceFilter {
 
 	@Override
 	public List<ServiceInstance> doFilter(List<ServiceInstance> instances, Environment environment, RequestData requestData, ServiceInstanceFilterChain chain) {
-		log.info("---------------策略隔离--------------");
 		if (environment == null) {
 			log.warn("指定环境为空，不对服务进行过滤");
 			return chain.doFilter(instances, null, requestData);
-		}
-		if (log.isDebugEnabled()) {
-			log.debug("准备进行实例过滤，指定的环境为：name={}, version={}", environment.getName(), environment.getVersion());
 		}
 		instances = instances.stream()
 				.filter(instance -> {
@@ -56,7 +53,7 @@ public class StrategyServiceInstanceFilter implements ServiceInstanceFilter {
 				.collect(Collectors.toList());
 
 		if (log.isDebugEnabled()) {
-			List<String> instanceIds = instances.stream().map(ServiceInstance::getInstanceId).collect(Collectors.toList());
+			List<String> instanceIds = instances.stream().map(Isolation::getInstanceId).collect(Collectors.toList());
 			log.debug("匹配到的实例：{}", instanceIds);
 		}
 		return chain.doFilter(instances, environment, requestData);

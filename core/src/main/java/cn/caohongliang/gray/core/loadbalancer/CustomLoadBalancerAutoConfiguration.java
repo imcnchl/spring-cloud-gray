@@ -1,6 +1,6 @@
 package cn.caohongliang.gray.core.loadbalancer;
 
-import cn.caohongliang.gray.core.flowcontrol.FlowControlProperties;
+import cn.caohongliang.gray.core.flowcontrol.config.FlowControlProperties;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.loadbalancer.annotation.LoadBalancerClients;

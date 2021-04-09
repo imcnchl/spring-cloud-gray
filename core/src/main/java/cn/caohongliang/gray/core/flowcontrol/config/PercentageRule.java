@@ -1,9 +1,8 @@
-package cn.caohongliang.gray.core.flowcontrol.rule;
+package cn.caohongliang.gray.core.flowcontrol.config;
 
+import cn.caohongliang.gray.core.flowcontrol.enviroment.RequestWrapper;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 按百分比进行流量控制
@@ -24,7 +23,7 @@ public class PercentageRule implements StrategyRule{
 	}
 
 	@Override
-	public boolean match(HttpServletRequest request) {
+	public boolean match(RequestWrapper request) {
 		//TODO caohongliang 待实现
 		return false;
 	}

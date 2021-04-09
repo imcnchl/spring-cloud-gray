@@ -1,7 +1,6 @@
 package cn.caohongliang.gray.core.loadbalancer;
 
-import cn.caohongliang.gray.core.flowcontrol.Constants;
-import cn.caohongliang.gray.core.flowcontrol.FlowControlProperties;
+import cn.caohongliang.gray.core.flowcontrol.config.FlowControlProperties;
 import cn.caohongliang.gray.core.flowcontrol.enviroment.Environment;
 import com.alibaba.nacos.client.naming.utils.Chooser;
 import com.alibaba.nacos.client.naming.utils.Pair;
@@ -63,33 +62,33 @@ public class CustomLoadBalancer implements ReactorServiceInstanceLoadBalancer {
 		DefaultRequestContext context = (DefaultRequestContext) request.getContext();
 		RequestData requestData = (RequestData) context.getClientRequest();
 
-		String base64Text = requestData.getHeaders().getFirst(Constants.ENVIRONMENT_VERSION_HEADER_NAME);
+		String base64Text = requestData.getHeaders().getFirst(Environment.HEADER_NAME);
 		Environment expectEnvironment = Environment.decode(base64Text);
 		Response<ServiceInstance> response = chooseInstance(instances, expectEnvironment, requestData);
 		if (response.hasServer()) {
 			return response;
 		}
 		//没有选中的服务，看是否启用兜底策略
-		if (!config.isOutStrategy()) {
+		if (config.getOutStrategy() == 0) {
 			//没有启用兜底
 			return response;
 		}
-		Environment currentEnvironment = config.getCurrent();
-		if (Objects.equals(expectEnvironment, currentEnvironment)) {
+		Environment outEnvironment = config.getOutEnvironment(expectEnvironment);
+		if (Objects.equals(expectEnvironment, outEnvironment)) {
 			//环境信息一致，无需重复执行相同逻辑
 			return response;
 		}
 		//启用兜底策略
-		response = chooseInstance(instances, currentEnvironment, requestData);
+		response = chooseInstance(instances, outEnvironment, requestData);
 		if (response.hasServer()) {
 			ServiceInstance server = response.getServer();
 			String instanceId = server.getServiceId() + "@@" + server.getHost() + "#" + server.getPort();
 			log.info("启用兜底策略，匹配到服务实例：environment={}, version={}, instanceId={}",
-					getEnvironmentName(currentEnvironment), getEnvironmentVersion(currentEnvironment),
+					getEnvironmentName(outEnvironment), getEnvironmentVersion(outEnvironment),
 					instanceId);
 		} else {
 			log.info("启用兜底策略，没有匹配到服务实例：environment={}, version={}",
-					getEnvironmentName(currentEnvironment), getEnvironmentVersion(currentEnvironment));
+					getEnvironmentName(outEnvironment), getEnvironmentVersion(outEnvironment));
 		}
 		return response;
 	}

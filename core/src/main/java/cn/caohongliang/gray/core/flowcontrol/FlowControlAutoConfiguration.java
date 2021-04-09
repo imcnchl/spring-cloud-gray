@@ -1,6 +1,8 @@
 package cn.caohongliang.gray.core.flowcontrol;
 
+import cn.caohongliang.gray.core.flowcontrol.config.FlowControlProperties;
 import cn.caohongliang.gray.core.flowcontrol.enviroment.EnvironmentProperties;
+import cn.caohongliang.gray.core.flowcontrol.enviroment.ReactiveEnvironmentMatcher;
 import cn.caohongliang.gray.core.flowcontrol.enviroment.ServletEnvironmentMatcher;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -22,13 +24,24 @@ public class FlowControlAutoConfiguration {
 	}
 
 	@Bean
-	public FlowControlFeignHeaderAdder flowControlFeignHeaderAdder() {
-		return new FlowControlFeignHeaderAdder();
+	public AddFeignRequestHeader flowControlFeignHeaderAdder() {
+		return new AddFeignRequestHeader();
 	}
 
-	@Bean
 	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
-	public ServletEnvironmentMatcher servletEnvironmentVersionMatcher() {
-		return new ServletEnvironmentMatcher();
+	public static class ServletFlowControlAutoConfiguration {
+		@Bean
+		public ServletEnvironmentMatcher servletEnvironmentVersionMatcher() {
+			return new ServletEnvironmentMatcher();
+		}
+	}
+
+	@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.REACTIVE)
+	public static class ReactiveFlowControlAutoConfiguration {
+		@Bean
+		public ReactiveEnvironmentMatcher reactiveEnvironmentMatcher() {
+			return new ReactiveEnvironmentMatcher();
+		}
+
 	}
 }

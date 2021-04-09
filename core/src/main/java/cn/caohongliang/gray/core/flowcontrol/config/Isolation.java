@@ -1,6 +1,5 @@
-package cn.caohongliang.gray.core.flowcontrol;
+package cn.caohongliang.gray.core.flowcontrol.config;
 
-import cn.caohongliang.gray.core.flowcontrol.rule.ContentRule;
 import cn.caohongliang.gray.core.util.SpringUtils;
 import com.alibaba.cloud.nacos.NacosDiscoveryProperties;
 import com.alibaba.cloud.nacos.NacosServiceInstance;

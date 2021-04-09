@@ -1,5 +1,7 @@
 package cn.caohongliang.gray.order.web;
 
+import cn.caohongliang.gray.common.logger.Logger;
+import cn.caohongliang.gray.core.util.RequestUtils;
 import cn.caohongliang.gray.order.api.dto.OrderDetailDTO;
 import cn.caohongliang.gray.order.api.web.OrderApi;
 import cn.caohongliang.gray.payment.api.dto.PaymentDTO;
@@ -9,6 +11,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Enumeration;
 
 @Slf4j
 @RestController
@@ -26,7 +32,16 @@ public class OrderController implements OrderApi {
 	@Override
 	public OrderDetailDTO getOrderDetail(Long orderId) {
 		log.info("--------------- getOrderDetail -----------------orderId={}", orderId);
-		String username = "username-" + System.currentTimeMillis();
+
+		HttpServletRequest request = RequestUtils.getRequest();
+		Enumeration<String> en = request.getHeaderNames();
+		while (en.hasMoreElements()) {
+			String header = en.nextElement();
+			Enumeration<String> values = request.getHeaders(header);
+			while (values.hasMoreElements()) {
+				Logger.info("请求头：" + header + "=" + values.nextElement());
+			}
+		}
 
 		PaymentDTO payment = null;
 		try {
@@ -43,15 +58,18 @@ public class OrderController implements OrderApi {
 					.build();
 		}
 
+
 //		System.out.println("使用rest");
 //		PaymentDTO paymentDTO = restTemplate.getForObject("http://payment/payment/order/1234", PaymentDTO.class);
 //		System.out.println(new Gson().toJson(paymentDTO));
 
+		String text = "环境=" + String.format("%1s", environmentName) + "，版本=" + String.format("%3s", environmentVersion) +
+				"，时间=" + LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
 		return OrderDetailDTO.builder()
 				.orderId(orderId)
-				.orderRemark("订单服务: " + environmentName + "-" + environmentVersion + "-" + orderId)
-				.userRemark(payment == null ? "" : payment.getUserRemark())
-				.paymentRemark(payment == null ? "" : payment.getRemark())
+				.remark1("订单服务：" + text)
+				.remark2(payment == null ? "" : payment.getRemark())
+				.remark3(payment == null ? "" : payment.getUserRemark())
 				.build();
 	}
 }

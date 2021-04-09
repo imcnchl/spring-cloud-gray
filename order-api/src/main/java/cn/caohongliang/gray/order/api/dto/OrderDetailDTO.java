@@ -18,7 +18,7 @@ public class OrderDetailDTO implements Serializable {
 	private static final long serialVersionUID = -7499043199051202026L;
 
 	private Long orderId;
-	private String orderRemark;
-	private String userRemark;
-	private String paymentRemark;
+	private String remark1;
+	private String remark2;
+	private String remark3;
 }

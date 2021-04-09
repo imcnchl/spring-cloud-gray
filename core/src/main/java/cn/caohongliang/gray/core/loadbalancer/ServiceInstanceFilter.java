@@ -27,8 +27,6 @@ public interface ServiceInstanceFilter extends Ordered {
 	 * @param requestData       请求数据
 	 * @return 过滤后的结果
 	 */
-//	List<ServiceInstance> filter(List<ServiceInstance> instances, Environment expectEnvironment, RequestData requestData);
-
 	List<ServiceInstance> doFilter(List<ServiceInstance> instances, Environment environment,
 	                               RequestData requestData, ServiceInstanceFilterChain chain);
 

@@ -1,7 +1,10 @@
 package cn.caohongliang.gray.core.flowcontrol.enviroment;
 
 import cn.caohongliang.gray.core.util.gson.GsonUtils;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
@@ -19,6 +22,10 @@ import java.util.Objects;
 @Slf4j
 public class Environment {
 	private static final ThreadLocal<Environment> threadLocal = new ThreadLocal<>();
+	/**
+	 * 请求头名称
+	 */
+	public static final String HEADER_NAME = "x-flow-control-environment";
 	/**
 	 * 环境名称
 	 */
@@ -86,10 +93,10 @@ public class Environment {
 		Environment environment = threadLocal.get();
 		if (environment != null) {
 			if (log.isDebugEnabled()) {
-				log.debug("缓存环境版本信息：environment={}, version={}", environment.getName(), environment.getVersion());
+				log.debug("清除环境缓存：environment={}, version={}", environment.getName(), environment.getVersion());
 			}
 		} else {
-			log.debug("缓存环境版本信息：环境版本信息不存在");
+			log.debug("清除环境缓存：环境版本信息不存在");
 		}
 		//真正移除
 		threadLocal.remove();

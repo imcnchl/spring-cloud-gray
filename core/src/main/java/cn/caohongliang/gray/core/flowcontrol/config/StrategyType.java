@@ -1,4 +1,4 @@
-package cn.caohongliang.gray.core.flowcontrol;
+package cn.caohongliang.gray.core.flowcontrol.config;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

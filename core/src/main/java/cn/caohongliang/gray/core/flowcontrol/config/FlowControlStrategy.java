@@ -1,14 +1,11 @@
-package cn.caohongliang.gray.core.flowcontrol;
+package cn.caohongliang.gray.core.flowcontrol.config;
 
 import cn.caohongliang.gray.core.flowcontrol.enviroment.Environment;
-import cn.caohongliang.gray.core.flowcontrol.rule.ContentRule;
-import cn.caohongliang.gray.core.flowcontrol.rule.PercentageRule;
+import cn.caohongliang.gray.core.flowcontrol.enviroment.RequestWrapper;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 流控策略
@@ -33,7 +30,7 @@ public class FlowControlStrategy {
 	 */
 	private int type;
 	/**
-	 * 使用的环境和版本信息
+	 * 预期的环境和版本信息
 	 */
 	private Environment environment;
 	/**
@@ -67,14 +64,7 @@ public class FlowControlStrategy {
 		return false;
 	}
 
-	public boolean match(Object request) {
-		if (request instanceof HttpServletRequest) {
-			return match((HttpServletRequest) request);
-		}
-		return false;
-	}
-
-	private boolean match(HttpServletRequest request) {
+	public boolean match(RequestWrapper request) {
 		if (this.type == StrategyType.content.getValue()) {
 			//按内容匹配
 			return this.contentRule.match(request);

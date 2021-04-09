@@ -1,5 +1,7 @@
 package cn.caohongliang.gray.core.flowcontrol;
 
+import cn.caohongliang.gray.core.flowcontrol.config.FlowControlProperties;
+import cn.caohongliang.gray.core.flowcontrol.config.Isolation;
 import cn.caohongliang.gray.core.flowcontrol.enviroment.Environment;
 import cn.caohongliang.gray.core.loadbalancer.ServiceInstanceFilter;
 import cn.caohongliang.gray.core.loadbalancer.ServiceInstanceFilterChain;
@@ -28,7 +30,6 @@ public class IsolationServiceInstanceFilter implements ServiceInstanceFilter {
 			return chain.doFilter(instances, environment, requestData);
 		}
 		//TODO caohongliang 待完成
-		log.info("TODO---------------故障隔离，不继续往下执行---------------");
 		return chain.doFilter(instances, environment, requestData);
 	}
 

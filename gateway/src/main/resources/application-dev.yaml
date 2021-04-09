@@ -1,3 +1,4 @@
+
 server:
   port: 8000
 spring:
@@ -8,3 +9,17 @@ spring:
           enabled: true
           lower-case-service-id: true
       enabled: true
+
+logging:
+  level:
+    root: info
+    com:
+      alibaba:
+        nacos:
+          client:
+            naming: warn
+    cn:
+      caohongliang:
+        gray:
+          core: info
+debug: true

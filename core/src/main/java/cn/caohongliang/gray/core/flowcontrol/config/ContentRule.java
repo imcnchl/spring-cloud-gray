@@ -1,11 +1,11 @@
-package cn.caohongliang.gray.core.flowcontrol.rule;
+package cn.caohongliang.gray.core.flowcontrol.config;
 
+import cn.caohongliang.gray.core.flowcontrol.enviroment.RequestWrapper;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -38,7 +38,7 @@ public class ContentRule implements StrategyRule {
 	}
 
 	@Override
-	public boolean match(HttpServletRequest request) {
+	public boolean match(RequestWrapper request) {
 		if (StringUtils.hasText(this.path)) {
 			if (!request.getRequestURI().endsWith(this.path)) {
 				log.info("path={}, uri={}", this.path, request.getRequestURI());

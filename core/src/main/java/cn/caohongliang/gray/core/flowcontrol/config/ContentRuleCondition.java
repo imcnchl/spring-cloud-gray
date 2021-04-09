@@ -1,10 +1,9 @@
-package cn.caohongliang.gray.core.flowcontrol.rule;
+package cn.caohongliang.gray.core.flowcontrol.config;
 
+import cn.caohongliang.gray.core.flowcontrol.enviroment.RequestWrapper;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.util.StringUtils;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 规则条件
@@ -37,7 +36,7 @@ public class ContentRuleCondition {
 				&& StringUtils.hasText(name) && StringUtils.hasText(value);
 	}
 
-	public boolean match(HttpServletRequest request) {
+	public boolean match(RequestWrapper request) {
 		switch (type) {
 			case 1:
 				//header
@@ -56,21 +55,21 @@ public class ContentRuleCondition {
 		}
 	}
 
-	private boolean matchHeader(HttpServletRequest request) {
-		return value.equals(request.getHeader(this.name));
+	private boolean matchHeader(RequestWrapper request) {
+		return value.equals(request.getFirstHeader(this.name));
 	}
 
-	private boolean matchUrl(HttpServletRequest request) {
+	private boolean matchUrl(RequestWrapper request) {
 		//TODO caohongliang 待实现
 		return false;
 	}
 
-	private boolean matchBody(HttpServletRequest request) {
+	private boolean matchBody(RequestWrapper request) {
 		//TODO caohongliang 待实现
 		return false;
 	}
 
-	private boolean matchCookie(HttpServletRequest request) {
+	private boolean matchCookie(RequestWrapper request) {
 		//TODO caohongliang 待实现
 		return false;
 	}

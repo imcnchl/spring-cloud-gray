@@ -1,6 +1,6 @@
-package cn.caohongliang.gray.core.flowcontrol.rule;
+package cn.caohongliang.gray.core.flowcontrol.config;
 
-import javax.servlet.http.HttpServletRequest;
+import cn.caohongliang.gray.core.flowcontrol.enviroment.RequestWrapper;
 
 /**
  * 策略规则
@@ -22,5 +22,5 @@ public interface StrategyRule {
 	 * @param request 请求
 	 * @return true=匹配
 	 */
-	boolean match(HttpServletRequest request);
+	boolean match(RequestWrapper request);
 }
