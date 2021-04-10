@@ -1,8 +1,19 @@
 package cn.caohongliang.gray.core.flowcontrol.enviroment;
 
+import org.springframework.http.HttpCookie;
+
 import java.util.List;
 
 public interface RequestWrapper {
+
+	/**
+	 * 是否为网关收到的请求
+	 *
+	 * @return true=是
+	 */
+	default boolean isGateway() {
+		return false;
+	}
 
 	/**
 	 * 获取URI
@@ -56,4 +67,11 @@ public interface RequestWrapper {
 	 * @return 所有参数值
 	 */
 	List<String> getBodyParams(String name);
+
+	/**
+	 * 获取所有Cookie
+	 * @return
+	 * @param name
+	 */
+	List<HttpCookie> getCookies(String name);
 }

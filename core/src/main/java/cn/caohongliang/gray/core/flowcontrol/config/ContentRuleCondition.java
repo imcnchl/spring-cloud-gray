@@ -3,7 +3,10 @@ package cn.caohongliang.gray.core.flowcontrol.config;
 import cn.caohongliang.gray.core.flowcontrol.enviroment.RequestWrapper;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.HttpCookie;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 /**
  * 规则条件
@@ -43,7 +46,7 @@ public class ContentRuleCondition {
 				return matchHeader(request);
 			case 2:
 				//url
-				return matchUrl(request);
+				return matchUrlParam(request);
 			case 3:
 				//body
 				return matchBody(request);
@@ -59,9 +62,9 @@ public class ContentRuleCondition {
 		return value.equals(request.getFirstHeader(this.name));
 	}
 
-	private boolean matchUrl(RequestWrapper request) {
-		//TODO caohongliang 待实现
-		return false;
+	private boolean matchUrlParam(RequestWrapper request) {
+		List<String> urlParams = request.getUrlParams(name);
+		return urlParams != null && urlParams.contains(value);
 	}
 
 	private boolean matchBody(RequestWrapper request) {
@@ -70,7 +73,7 @@ public class ContentRuleCondition {
 	}
 
 	private boolean matchCookie(RequestWrapper request) {
-		//TODO caohongliang 待实现
-		return false;
+		List<HttpCookie> cookies = request.getCookies(name);
+		return cookies != null && cookies.stream().anyMatch(c -> c.getName().equals(name));
 	}
 }

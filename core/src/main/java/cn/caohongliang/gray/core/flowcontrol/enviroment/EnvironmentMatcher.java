@@ -21,10 +21,10 @@ public interface EnvironmentMatcher {
 	/**
 	 * 包装请求
 	 *
-	 * @param request 请求
+	 * @param params 需要的参数，由于不同的matcher需要的参数和长度不一致，所以这里用可变参数接收
 	 * @return wrapper
 	 */
-	RequestWrapper wrapper(Object request);
+	RequestWrapper wrapper(Object... params);
 
 	/**
 	 * 根据流控策略对当前请求进行匹配，判断应该转发到哪个版本
@@ -36,9 +36,12 @@ public interface EnvironmentMatcher {
 			//没有启用流控策略
 			return null;
 		}
-		String base64Text = request.getFirstHeader(Environment.HEADER_NAME);
-		//TODO gateway即使设置该请求头也不能生效，避免直接指定版本
-		Environment environment = Environment.decode(base64Text);
+		Environment environment = null;
+		if (!request.isGateway()) {
+			//不是网关，可以通过请求头指定环境
+			String base64Text = request.getFirstHeader(Environment.HEADER_NAME);
+			environment = Environment.decode(base64Text);
+		}
 		if (environment != null) {
 			//已经指定了环境和版本
 			return environment;

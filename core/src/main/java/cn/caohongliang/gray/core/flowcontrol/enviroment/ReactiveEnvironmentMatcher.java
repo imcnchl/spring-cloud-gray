@@ -17,7 +17,7 @@ import java.util.Base64;
 
 
 /**
- * 流控策略匹配，reative
+ * 流控策略匹配，网关
  *
  * @author caohongliang
  */
@@ -36,8 +36,9 @@ public class ReactiveEnvironmentMatcher implements GlobalFilter, EnvironmentMatc
 	}
 
 	@Override
-	public RequestWrapper wrapper(Object request) {
-		return new ReactiveRequestWrapper((ServerHttpRequest) request);
+	public RequestWrapper wrapper(Object... params) {
+		ServerWebExchange exchange = (ServerWebExchange) params[0];
+		return new ReactiveRequestWrapper(exchange);
 	}
 
 	@Override
@@ -45,7 +46,7 @@ public class ReactiveEnvironmentMatcher implements GlobalFilter, EnvironmentMatc
 		ServerHttpRequest request = exchange.getRequest();
 		ServerHttpRequest serverHttpRequest = request.mutate()
 				.headers(headers -> {
-					Environment environment = match(config, wrapper(request));
+					Environment environment = match(config, wrapper(exchange, chain));
 					if (environment == null) {
 						return;
 					}

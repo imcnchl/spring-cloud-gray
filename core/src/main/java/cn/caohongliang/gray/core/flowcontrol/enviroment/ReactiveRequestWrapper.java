@@ -1,6 +1,9 @@
 package cn.caohongliang.gray.core.flowcontrol.enviroment;
 
+import org.springframework.http.HttpCookie;
 import org.springframework.http.server.reactive.ServerHttpRequest;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.server.ServerWebExchange;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +14,13 @@ import java.util.List;
 public class ReactiveRequestWrapper implements RequestWrapper {
 	private final ServerHttpRequest request;
 
-	public ReactiveRequestWrapper(ServerHttpRequest request) {
-		this.request = request;
+	public ReactiveRequestWrapper(ServerWebExchange exchange) {
+		this.request = exchange.getRequest();
+	}
+
+	@Override
+	public boolean isGateway() {
+		return true;
 	}
 
 	@Override
@@ -34,5 +42,11 @@ public class ReactiveRequestWrapper implements RequestWrapper {
 	public List<String> getBodyParams(String name) {
 		//TODO caohongliang form-data & json
 		return new ArrayList<>(0);
+	}
+
+	@Override
+	public List<HttpCookie> getCookies(String name) {
+		MultiValueMap<String, HttpCookie> cookies = request.getCookies();
+		return cookies.get(name);
 	}
 }

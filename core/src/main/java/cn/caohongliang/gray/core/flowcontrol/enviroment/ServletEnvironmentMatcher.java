@@ -28,8 +28,8 @@ public class ServletEnvironmentMatcher extends OncePerRequestFilter implements E
 	}
 
 	@Override
-	public RequestWrapper wrapper(Object request) {
-		return new ServletRequestWrapper((HttpServletRequest) request);
+	public RequestWrapper wrapper(Object... params) {
+		return new ServletRequestWrapper((HttpServletRequest) params[0]);
 	}
 
 	@Override

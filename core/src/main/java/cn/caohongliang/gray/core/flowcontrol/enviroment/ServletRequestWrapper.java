@@ -1,11 +1,14 @@
 package cn.caohongliang.gray.core.flowcontrol.enviroment;
 
+import org.springframework.http.HttpCookie;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -60,5 +63,14 @@ public class ServletRequestWrapper implements RequestWrapper {
 	public List<String> getBodyParams(String name) {
 		//TODO caohongliang form-data & json
 		return new ArrayList<>(0);
+	}
+
+	@Override
+	public List<HttpCookie> getCookies(String name) {
+		Cookie[] cookies = Optional.ofNullable(request.getCookies()).orElse(new Cookie[0]);
+		return Stream.of(cookies)
+				.map(c -> new HttpCookie(c.getName(), c.getValue()))
+				.filter(c -> c.getName().equals(name))
+				.collect(Collectors.toList());
 	}
 }
