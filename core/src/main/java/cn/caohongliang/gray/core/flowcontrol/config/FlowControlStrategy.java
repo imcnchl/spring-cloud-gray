@@ -30,7 +30,7 @@ public class FlowControlStrategy {
 	 */
 	private int type;
 	/**
-	 * 预期的环境和版本信息
+	 * 预期环境：满足该策略后使用的环境和版本
 	 */
 	private Environment environment;
 	/**

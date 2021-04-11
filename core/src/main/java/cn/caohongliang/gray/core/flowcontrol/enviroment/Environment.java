@@ -27,11 +27,11 @@ public class Environment {
 	 */
 	public static final String HEADER_NAME = "x-flow-control-environment";
 	/**
-	 * 环境名称
+	 * 环境名称，英文字符
 	 */
 	private String name;
 	/**
-	 * 版本信息，为空表示不指定
+	 * 版本信息，同一个环境中可能有多个版本的代码，如果指定了则只访问指定版本的代码
 	 */
 	private String version;
 

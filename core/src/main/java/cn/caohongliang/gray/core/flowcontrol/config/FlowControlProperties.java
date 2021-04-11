@@ -30,15 +30,17 @@ public class FlowControlProperties {
 	 */
 	private boolean enable;
 	/**
-	 * 当前环境
+	 * 当前环境，设置没有匹配的策略时流量应该到哪个环境，必须指定
 	 */
 	private Environment current;
 	/**
-	 * 进行隔离的实例ID
+	 * TODO 故障隔离策略，暂未实现
 	 */
 	private List<Isolation> isolations;
 	/**
-	 * 兜底策略（无法根据预期环境版本匹配实例），以下说明中的当前指 current 字段配置的环境
+	 * 兜底策略：无法根据“预期环境和版本”匹配实例
+	 * 预期：strategies.environment 指定的环境
+	 * 当前：current 指定的环境
 	 * 0-不使用兜底策略
 	 * 1-使用相同环境的服务实例（预期：B环境 1.1版本，则匹配B环境所有版本）
 	 * 2-使用当前环境当前版本的服务实例（当前：A环境 1.1版本，预期：B环境 1.2版本，则匹配A环境 1.1版本）

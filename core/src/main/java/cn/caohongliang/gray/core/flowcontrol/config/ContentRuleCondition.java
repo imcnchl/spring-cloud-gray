@@ -20,7 +20,7 @@ public class ContentRuleCondition {
 	 * 条件类型
 	 * 1-Header参数
 	 * 2-URL参数
-	 * 3-Body参数
+	 * 3-Body参数（TODO 待实现）
 	 * 4-Cookie参数
 	 */
 	private int type;
