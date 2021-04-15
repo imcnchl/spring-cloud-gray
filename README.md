@@ -1,4 +1,8 @@
-# spring-cloud-gray
+# spring-cloud-gray - 微服务流量控制
+
+## 功能描述
+
+1. 灰度发布：可以
 
 ## 流量控制（灰度发布）
 
@@ -6,7 +10,7 @@
 
 请求地址：http://localhost:8000/order/order/detail/{{$timestamp}}
 
-### 流控规则配置说明
+### 配置说明
 
 PS：为了方便展示，这里采用json配置，如需使用yaml、properties请自行转换
 
@@ -137,7 +141,3 @@ java -jar .\user\target\user-1.0.0.jar --server.port=0 --environment.name=B --en
 
 修改nacos配置中心的 flow-control.json，并多次请求，看响应返回
 
-## SkyWalking
-### 本地开发
-启动参数：
--javaagent:D:\Software\apache-skywalking-apm-bin-es7\agent\skywalking-agent.jar -Dskywalking.collector.backend_service=192.168.56.11:11800 -Dskywalking.agen.service_name=gateway
